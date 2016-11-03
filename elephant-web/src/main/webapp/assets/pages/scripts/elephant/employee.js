@@ -20,8 +20,8 @@ var employee = function () {
 		dataUrl: '/elephant/employee',
 		datatablesLanguageFile: '/assets/global/plugins/datatables/chinese.json',
 		employeeGrid: null,
-		editPageUrl: '/elephant/edit.jsp',
-		viewPageUrl: '/elephant/view.jsp',
+		editPageUrl: '/elephant/editEmployee.jsp',
+		viewPageUrl: '/elephant/viewEmployee.jsp',
 		editBtn_html: '<a href="javascript:;" class="btn btn-xs default" data-type="edit" data-toggle="tooltip" title="编辑雇员信息"><i class="fa fa-edit"></i></a>',
 		deleteBtn_html: '<a href="javascript:;" class="btn btn-xs default" data-type="del" data-toggle="tooltip" title="删除雇员"><i class="fa fa-times"></i></a>',
 		viewBtn_html: '<a href="javascript:;" class="btn btn-xs default" data-type="view" data-toggle="tooltip" title="查看雇员信息"><i class="fa fa-search"></i></a>'
