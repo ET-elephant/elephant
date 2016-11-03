@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace必须和接口名称一一对应 -->
+<mapper namespace="com.xinhai.elephant.dao.StudentMapper">
+    <!-- 插入student记录 -->
+    <insert id="createStudent" parameterType="com.xinhai.elephant.api.Student"
+            keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO student (name, code, sex, age, birthday)
+			VALUES (#{name}, #{code},#{sex}, #{age}, #{birthday});
+	</insert>
+    <!--通过id,更新一条student数据 -->
+    <update id="updateStudent" parameterType="com.xinhai.elephant.api.Student">
+        UPDATE student
+        <set>
+            <if test="student.name != null">
+                name = #{student.name},
+            </if>
+            <if test="student.code != null">
+                code = #{student.code},
+            </if>
+            <if test="student.sex != null">
+                sex = #{student.sex},
+            </if>
+            <if test="student.age != null">
+                age = #{student.age},
+            </if>
+            <if test="student.birthday != null">
+                birthday = #{student.birthday},
+            </if>
+        </set>
+        WHERE id = #{id};
+    </update>
+    <!--同时删除多条额student数据  -->
+    <delete id="deleteStudentList" parameterType="List">
+        DELETE FROM student
+        WHERE id in
+        <foreach item="id" collection="list" open="(" separator=","
+                 close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!--通过id删除一条student数据  -->
+    <delete id="deleteStudent" parameterType="String">
+		DELETE FROM student
+			WHERE id = #{id}
+	</delete>
+    <!--获取一个student数据  -->
+    <select id="getStudent" resultType="com.xinhai.elephant.api.Student"
+            parameterType="String">
+		SELECT * FROM student WHERE id = #{id};
+	</select>
+    <!--获取所有student数据  -->
+    <select id="getStudentList" resultType="com.xinhai.elephant.api.Student">
+		SELECT * FROM student;
+	</select>
+    <!--模糊查询  -->
+    <select id="getStudentListByKeyword" resultType="com.xinhai.elephant.api.Student">
+        SELECT * FROM student WHERE
+        <if test="keyword != null and keyword != ''">
+            WHERE CONCAT(name, code, sex, age) LIKE
+            CONCAT('%',#{keyword},'%')
+        </if>
+    </select>
+
+    <select id="getAllStudent" resultType="com.alibaba.fastjson.JSONObject"
+            statementType="CALLABLE">
+         <![CDATA[
+
+           {call testProc(
+              #{id,mode=IN,jdbcType=INTEGER}
+           )}
+
+        ]]>
+    </select>
+</mapper>

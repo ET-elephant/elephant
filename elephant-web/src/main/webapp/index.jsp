@@ -1,9 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
-<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
-<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if IE 8]> <html lang="en" class="ie8 no-js" data-ng-app="MetronicApp"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js" data-ng-app="MetronicApp"> <![endif]-->
 <!--[if !IE]><!-->
-<html lang="en">
+<html lang="en" data-ng-app="MetronicApp">
 <!--<![endif]-->
 
 <head>
@@ -65,7 +65,7 @@
 
     <link href="<%=request.getContextPath()%>/assets/layouts/layout1/css/layout.css"
           rel="stylesheet" type="text/css"/>
-    <link href="<%=request.getContextPath()%>/assets/layouts/layout1/css/themes/blue.css"
+    <link href="<%=request.getContextPath()%>/assets/layouts/layout1/css/themes/darkblue.css"
           rel="stylesheet" type="text/css" id="style_color"/>
 </head>
 
@@ -73,8 +73,11 @@
 <div class="page-header navbar navbar-fixed-top">
     <div class="page-header-inner ">
         <div class="page-logo">
-            <a href="#">
+            <a href="index.jsp">
                 <span class="logo-default">信海平台</span> </a>
+            <div class="menu-toggler sidebar-toggler">
+                <span></span>
+            </div>
         </div>
         <div class="top-menu">
             <ul class="nav navbar-nav pull-right">
@@ -104,12 +107,22 @@
         <div class="page-sidebar navbar-collapse collapse">
             <ul class="page-sidebar-menu page-header-fixed " data-keep-expanded="false"
                 data-auto-scroll="true" data-slide-speed="200" style="padding-top: 20px">
+                <li class="nav-item nav-top-menu"><a href="#" class="nav-link nav-toggle"><i
+                        class="fa fa-tree"></i><span class="title">测试菜单</span><span
+                        class="arrow"></span></a>
+                    <ul class="sub-menu">
+                        <li class="nav-item"><a href="#" url="/elephant/employee.jsp"
+                                                data-addtab="a8890322-c4c9-41fe-9c3b-0c6df07319e5"
+                                                class="nav-link nav-toggle"><i
+                                class="fa fa-braille"></i><span class="title">雇员信息管理</span></a></li>
+                        <li class="nav-item"><a href="#" url="/elephant/student.jsp"
+                                                data-addtab="a8890322-c4c9-41fe-9c3b-0c6df07319e5"
+                                                class="nav-link nav-toggle"><i
+                                class="fa fa-braille"></i><span class="title">学生信息管理</span></a></li>
+
+                    </ul>
+                </li>
             </ul>
-        </div>
-        <div class="page-footer">
-            <div class="menu-toggler sidebar-toggler">
-                <i class="fa fa-chevron-circle-left"></i>
-            </div>
         </div>
     </div>
     <div class="page-content-wrapper">
@@ -136,8 +149,6 @@
 <script src="<%=request.getContextPath()%>/assets/global/plugins/uniform/jquery.uniform.min.js"
         type="text/javascript"></script>
 <script src="<%=request.getContextPath()%>/assets/global/plugins/lodash.min.js"
-        type="text/javascript"></script>
-<script src="<%=request.getContextPath()%>/assets/global/plugins/js.cookie.js"
         type="text/javascript"></script>
 <script src="<%=request.getContextPath()%>/assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js"
         type="text/javascript"></script>
@@ -192,10 +203,8 @@
 <script src="<%=request.getContextPath()%>/assets/global/plugins/bootstrap-select/js/i18n/defaults-zh_CN.min.js"></script>
 <script src="<%=request.getContextPath()%>/assets/global/plugins/jquery-ui/jquery-ui.min.js"></script>
 <script src="<%=request.getContextPath()%>/assets/global/plugins/jquery-layout/jquery.layout-latest.js"></script>
-
+<script src="<%=request.getContextPath()%>/assets/global/plugins/js.cookie.js"></script>
 <script src="<%=request.getContextPath()%>/assets/global/scripts/app.js"
-        type="text/javascript"></script>
-<script src="<%=request.getContextPath()%>/assets/global/scripts/datatable.js"
         type="text/javascript"></script>
 <script src="<%=request.getContextPath()%>/assets/layouts/layout1/scripts/layout.js"
         type="text/javascript"></script>
@@ -204,101 +213,8 @@
 </body>
 
 <script type="text/javascript">
-    var configMap = {
-        modifyUrl: '<%=request.getContextPath()%>/modifypwd.jsp'
-    };
-    var jqueryMap = {
-        $modifyPwdDialog: null
-    };
-
-    var builderMenu = function (menus, parentHtml) {
-        _.forEach(menus, function (menu) {
-            var attr = menu.url ? (
-            ' url="' + menu.url + '" data-addtab="' + menu.id + '"') : '';
-            var item = $('<li class="nav-item">' +
-                    '<a href="#" ' + attr + ' class="nav-link nav-toggle">' +
-                    '<i class="' + menu.icon + '"></i>' +
-                    '<span class="title">' + menu.text + '</span>' +
-                    (
-                            menu.children ? '<span class="arrow"></span>' : '') +
-                    '</a>' +
-                    '</li>');
-            if (menu.children) {
-                var childrenHtml = $('<ul class="sub-menu"></ul>');
-                $(item).appendTo(parentHtml);
-                $(childrenHtml).appendTo(item);
-                builderMenu(menu.children, childrenHtml);
-            }
-            else {
-                $(item).appendTo(parentHtml);
-            }
-        });
-    };
-
     jQuery(document).ready(function () {
-        $('.page-sidebar-menu').on('click', '[data-addtab]', function () {
-            $.get("<%=request.getContextPath()%>/verifylogin", null, function (result) {
-                if (!result) {
-                    window.location.href = "<%=request.getContextPath()%>/login.jsp";
-                }
-            });
-        });
-
         App.setAssetsPath('<%=request.getContextPath()%>/assets/');
-        $('#logout').off().on('click', function () {
-            $.get("<%=request.getContextPath()%>/logout", null, function (result) {
-                if (!result.failed) {
-                    window.location.href = "<%=request.getContextPath()%>/login.jsp";
-                }
-            });
-        });
-
-        $.get('<%=request.getContextPath()%>/menu', null, function (result) {
-            if (result) {
-                var menuTreeHtml = $('.page-sidebar-wrapper .page-sidebar-menu');
-                builderMenu(result.menus, menuTreeHtml);
-                $('.page-sidebar-wrapper .page-sidebar-menu > li').addClass('nav-top-menu');
-            }
-        });
-
-        $.get('<%=request.getContextPath()%>/getsysinfo', null, function (result) {
-            if (result) {
-                $('.username').text(result.userinfo);
-                var title = result.title ? result.title : '信海平台';
-                $('.logo-default').text(title);
-                $('title').text(title);
-            }
-        });
-
-        $('#modifyPwd').on('click', function () {
-            var dialogButtons = {
-                cancel: {
-                    label: '<i class="fa fa-times"></i> 关&nbsp;闭 ',
-                    className: 'btn-default'
-                }
-            };
-
-            dialogButtons.success = {
-                label: '<i class="fa fa-save"></i> 保&nbsp;存 ',
-                className: "btn-primary",
-                callback: function () {
-                    modifyPwd.modify(function (result) {
-                        if (result) {
-                            jqueryMap.$modifyPwdDialog.modal('hide');
-                        }
-                    });
-                    return false;
-                }
-            };
-
-            $.get(configMap.modifyUrl, function (html) {
-                jqueryMap.$modifyPwdDialog = bootbox.dialog({
-                    title: '修改密码',
-                    message: html,
-                    buttons: dialogButtons
-                });
-            });
-        });
     });
 
 </script>
