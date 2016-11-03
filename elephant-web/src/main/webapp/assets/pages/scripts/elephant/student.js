@@ -20,8 +20,8 @@ var student = function () {
 		dataUrl: '/elephant/student',
 		datatablesLanguageFile: '/assets/global/plugins/datatables/chinese.json',
 		studentGrid: null,
-		editPageUrl: '/elephant/edit.jsp',
-		viewPageUrl: '/elephant/view.jsp',
+		editPageUrl: '/elephant/editStudent.jsp',
+		viewPageUrl: '/elephant/viewStudent.jsp',
 		editBtn_html: '<a href="javascript:;" class="btn btn-xs default" data-type="edit" data-toggle="tooltip" title="编辑学生信息"><i class="fa fa-edit"></i></a>',
 		deleteBtn_html: '<a href="javascript:;" class="btn btn-xs default" data-type="del" data-toggle="tooltip" title="删除学生"><i class="fa fa-times"></i></a>',
 		viewBtn_html: '<a href="javascript:;" class="btn btn-xs default" data-type="view" data-toggle="tooltip" title="查看学生信息"><i class="fa fa-search"></i></a>'
